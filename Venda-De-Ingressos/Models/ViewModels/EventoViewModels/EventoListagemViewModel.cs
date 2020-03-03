@@ -8,5 +8,6 @@ namespace Venda_De_Ingressos.Models.ViewModels.EventoViewModels {
         public DateTime Data { get; set; }
         public string CasaShowNome { get; set; }
         public int CasaDeShowId { get; set; }
+        public int Capacidade { get; set; }
     }
 }
