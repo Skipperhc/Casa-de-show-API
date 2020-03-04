@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Venda_De_Ingressos.Data;
@@ -31,17 +32,18 @@ namespace Venda_De_Ingressos.Repositories {
         }
 
         public CasaDeShow Buscar(int id) {
-            return _dbContext.Set<CasaDeShow>().Include(x => x.Eventos)
-                      .FirstOrDefault(x => x.Id == id);
+            return _dbContext.Set<CasaDeShow>().Include(x => x.Eventos).FirstOrDefault(x => x.Id == id);
         }
 
         public bool Existe(int id) {
             return _dbContext.Set<CasaDeShow>().Any(x => x.Id == id);
         }
 
-        public CasaDeShow BuscarNome(string nome) {
-            return _dbContext.Set<CasaDeShow>().Include(x => x.Eventos)
-                      .FirstOrDefault(x => x.Nome == nome);        }
+        //busco no banco todos os nomes que tenham o {nome} no meio, isso é muito bom, aumenta a eficácia 
+        public List<CasaDeShow> BuscarNome(string nome) {
+            return _dbContext.Set<CasaDeShow>().Include(x => x.Eventos).Where
+                (x => x.Nome.Contains(nome, StringComparison.InvariantCultureIgnoreCase)).ToList();
+        }
 
         public IEnumerable<CasaDeShowListagemViewModel> Listar() {
             return _dbContext.Set<CasaDeShow>().Select
@@ -59,7 +61,7 @@ namespace Venda_De_Ingressos.Repositories {
 
         public IEnumerable<CasaDeShowListagemViewModel> ListarDesc() {
             return _dbContext.Set<CasaDeShow>().Select
-                (x => new CasaDeShowListagemViewModel() {
+            (x => new CasaDeShowListagemViewModel() {
                 Id = x.Id, Nome = x.Nome, Endereco = x.Endereco, Capacidade = x.Capacidade
             }).OrderByDescending(x => x.Nome).ToList();
         }

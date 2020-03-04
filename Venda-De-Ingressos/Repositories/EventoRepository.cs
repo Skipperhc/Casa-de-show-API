@@ -52,6 +52,7 @@ namespace Venda_De_Ingressos.Repositories
                     Nome = x.Nome,
                     Preco = x.Preco,
                     Data = x.Data,
+                    Capacidade = x.CasaDeShow.Capacidade,
                     CasaShowNome = x.CasaDeShow.Nome,
                     CasaDeShowId = x.CasaDeShowId
                 }).ToList();
@@ -183,6 +184,10 @@ namespace Venda_De_Ingressos.Repositories
                     Capacidade = x.CasaDeShow.Capacidade
 
                 }).OrderByDescending(x => x.Preco).ToList();
+        }
+        
+        public bool Existe(int id) {
+            return _dbContext.Set<Evento>().Any(x => x.Id == id);
         }
     }
 }

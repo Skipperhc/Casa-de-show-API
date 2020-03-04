@@ -12,8 +12,7 @@ namespace Venda_De_Ingressos.Models.ViewModels.CasaDeShowViewModels {
         public string Endereco { get; set; }
         
         [Required(ErrorMessage = "O campo {0} é requerido")]
-        [MinLength(3, ErrorMessage = "Deve ter ao menos {1}")]
-        [MaxLength(10000, ErrorMessage = "Deve ter no máximo {1}")]
+        [Range(3,10000, ErrorMessage = "O campo {0} aceita numeros de {1} até {2}")]
         public int Capacidade { get; set; }
     }
 }

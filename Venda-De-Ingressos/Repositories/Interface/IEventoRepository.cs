@@ -13,7 +13,7 @@ namespace Venda_De_Ingressos.Repositories.Interface {
         IEnumerable<EventoListagemViewModel> ListarNomeDesc();
         IEnumerable<EventoListagemViewModel> ListarPrecoAsc();
         IEnumerable<EventoListagemViewModel> ListarPrecoDesc();
-
+        bool Existe(int id);
 
     }
 }
