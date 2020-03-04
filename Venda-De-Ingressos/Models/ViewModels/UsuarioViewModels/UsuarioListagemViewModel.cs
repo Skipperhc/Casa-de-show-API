@@ -3,6 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Venda_De_Ingressos.Models.ViewModels.UsuarioViewModels {
     public class UsuarioListagemViewModel {
+        
+        [Required(ErrorMessage = "O campo {0} é requerido")]
         public int Id { get; set; }
         
         [Required(ErrorMessage = "O campo {0} é requerido")]
