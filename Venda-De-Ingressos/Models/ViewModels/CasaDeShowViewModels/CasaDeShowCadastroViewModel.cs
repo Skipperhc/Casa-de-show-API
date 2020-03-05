@@ -12,7 +12,7 @@ namespace Venda_De_Ingressos.Models.ViewModels.CasaDeShowViewModels {
         public string Endereco { get; set; }
         
         [Required(ErrorMessage = "O campo {0} é requerido")]
-        [Range(3,10000, ErrorMessage = "O campo {0} aceita numeros de {1} até {2}")]
+        [Range(3,10000, ErrorMessage = "O campo {0} tem de estar entre {1} e {2}")]
         public int Capacidade { get; set; }
     }
 }

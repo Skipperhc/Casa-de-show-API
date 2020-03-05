@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace Venda_De_Ingressos.Models {
-    public class Vendas {
+    public class Venda {
         public int Id { get; set; }
         public double Preco { get; set; }
         public Evento Evento { get; set; }

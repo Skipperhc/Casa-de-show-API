@@ -19,6 +19,8 @@ namespace Venda_De_Ingressos.Controllers {
         /// <summary>
         /// Retorna uma lista de eventos.
         /// </summary>
+        /// <response code="200">Se a listagem for um sucesso.</response>
+        /// <response code="404">Se nenhum evento for encontrado.</response>
         [HttpGet] [Route("api/eventos")] public ObjectResult Get() {
             var evento = _eventoRepository.Listar();
 
@@ -31,10 +33,12 @@ namespace Venda_De_Ingressos.Controllers {
             return RespostaFormato.GerarResultado("Listagem das eventos", evento);
         }
 
-        /// <summary>
+        /// <summary>    
         /// Retorna um evento através do id.
         /// </summary>
-        /// <param name="id">Id do evento</param>  
+        /// <param name="id">Id do evento</param>
+        /// <response code="200">Se o evento for retornado com sucesso.</response>
+        /// <response code="404">Se nenhuma casa for encontrada.</response>
         [HttpGet] [Route("api/eventos/{id}")] public ObjectResult Get(int id) {
             var evento = _eventoRepository.Buscar(id);
 
@@ -50,6 +54,8 @@ namespace Venda_De_Ingressos.Controllers {
         /// <summary>
         /// lista os eventos ordenados pela capacidade crescente.
         /// </summary>
+        /// <response code="200">Se a listagem for um sucesso.</response>
+        /// <response code="404">Se nenhum evento for encontrado.</response>
         [HttpGet] [Route("api/eventos/capacidade/asc")]
         public ObjectResult GetCapAsc() {
             var evento = _eventoRepository.ListarCapAsc();
@@ -66,6 +72,8 @@ namespace Venda_De_Ingressos.Controllers {
         /// <summary>
         /// lista os eventos ordenados pela capacidade decrescente.
         /// </summary>
+        /// <response code="200">Se a listagem for um sucesso.</response>
+        /// <response code="404">Se nenhum evento for encontrado.</response>
         [HttpGet] [Route("api/eventos/capacidade/desc")]
         public ObjectResult GetCapDesc() {
             var evento = _eventoRepository.ListarCapDesc();
@@ -82,6 +90,8 @@ namespace Venda_De_Ingressos.Controllers {
         /// <summary>
         /// lista os eventos ordenados pela data crescente.
         /// </summary>
+        /// <response code="200">Se a listagem for um sucesso.</response>
+        /// <response code="404">Se nenhum evento for encontrado.</response>
         [HttpGet] [Route("api/eventos/data/asc")]
         public ObjectResult GetDataAsc() {
             var evento = _eventoRepository.ListarDataAsc();
@@ -98,6 +108,8 @@ namespace Venda_De_Ingressos.Controllers {
         /// <summary>
         /// lista os eventos ordenados pela data decrescente.
         /// </summary>
+        /// <response code="200">Se a listagem for um sucesso.</response>
+        /// <response code="404">Se nenhum evento for encontrado.</response>
         [HttpGet] [Route("api/eventos/data/desc")]
         public ObjectResult GetDataDesc() {
             var evento = _eventoRepository.ListarDataDesc();
@@ -114,6 +126,8 @@ namespace Venda_De_Ingressos.Controllers {
         /// <summary>
         /// lista os eventos em ordem alfabética.
         /// </summary>
+        /// <response code="200">Se a listagem for um sucesso.</response>
+        /// <response code="404">Se nenhum evento for encontrado.</response>
         [HttpGet] [Route("api/eventos/nome/asc")]
         public ObjectResult GetNomeAsc() {
             var evento = _eventoRepository.ListarNomeAsc();
@@ -130,6 +144,8 @@ namespace Venda_De_Ingressos.Controllers {
         /// <summary>
         /// lista os eventos em ordem alfabética decrescente.
         /// </summary>
+        /// <response code="200">Se a listagem for um sucesso.</response>
+        /// <response code="404">Se nenhum evento for encontrado.</response>
         [HttpGet] [Route("api/eventos/nome/desc")]
         public ObjectResult GetNomeDesc() {
             var evento = _eventoRepository.ListarNomeDesc();
@@ -146,6 +162,8 @@ namespace Venda_De_Ingressos.Controllers {
         /// <summary>
         /// lista os eventos ordenados pelo preço crescente.
         /// </summary>
+        /// <response code="200">Se a listagem for um sucesso.</response>
+        /// <response code="404">Se nenhum evento for encontrado.</response>
         [HttpGet] [Route("api/eventos/preco/asc")]
         public ObjectResult GetPrecoAsc() {
             var evento = _eventoRepository.ListarPrecoAsc();
@@ -162,6 +180,8 @@ namespace Venda_De_Ingressos.Controllers {
         /// <summary>
         /// lista os eventos ordenados pelo preço decrescente.
         /// </summary>
+        /// <response code="200">Se a listagem for um sucesso.</response>
+        /// <response code="404">Se nenhum evento for encontrado.</response>
         [HttpGet] [Route("api/eventos/preco/desc")]
         public ObjectResult GetPrecoDesc() {
             var evento = _eventoRepository.ListarPrecoDesc();
@@ -179,7 +199,9 @@ namespace Venda_De_Ingressos.Controllers {
         /// Cadastra um evento.
         /// </summary>
         /// <remarks>
-        /// Sample request:
+        /// Exemplo de cadastro:
+        ///
+        ///     Post/Todo
         ///     {
         ///      "nome": "string",
         ///      "preco": 0,
@@ -187,6 +209,8 @@ namespace Venda_De_Ingressos.Controllers {
         ///      "casaDeShowId": 0
         ///     }
         /// </remarks>
+        /// <response code="201">Se o cadastro for um sucesso.</response>
+        /// <response code="400">Se der erro ao cadastrar: parâmetros errados ou incompatíveis, falta de informação.</response>
         [HttpPost] [Route("api/eventos/")]
         public ObjectResult Post([FromBody] EventoCadastroViewModel eventoTemporario) {
             if (!ModelState.IsValid) {
@@ -211,7 +235,7 @@ namespace Venda_De_Ingressos.Controllers {
         /// </summary>
         /// <param name="id"> do evento</param>  
         /// <remarks>
-        /// Sample request:
+        /// Exemplo de edição:
         ///     {
         ///      "id": 0,
         ///      "nome": "string",
@@ -220,8 +244,15 @@ namespace Venda_De_Ingressos.Controllers {
         ///      "casaDeShowId": 0
         ///     }
         /// </remarks>
+        /// <response code="201">Se o cadastro for um sucesso.</response>
+        /// <response code="400">Se der erro ao cadastrar: parâmetros errados ou incompatíveis, falta de informação.</response>
         [HttpPut] [Route("api/eventos/{id}")]
         public ObjectResult Put(int id, [FromBody] EventoEdicaoViewModel eventoTemporario) {
+            if (eventoTemporario == null) {
+                Response.StatusCode = StatusCodes.Status406NotAcceptable;
+                return RespostaFormato.GerarResultado("Campos não foram preenchidos corretamente");
+            }
+            
             if (id != eventoTemporario.Id) {
                 ModelState.AddModelError("Id", "Id da requisição difere do Id da categoria.");
             }
@@ -250,7 +281,10 @@ namespace Venda_De_Ingressos.Controllers {
         /// <summary>
         /// Deleta um evento através do id.
         /// </summary>
-        /// <param name="id"> do evento</param>  
+        /// <param name="id"> do evento</param>
+        /// <response code="200">Se a exclusão for um sucesso.</response>
+        /// <response code="404">Se o evento não for encontrado</response>
+        /// <response code="406">Se não for possível deletar este evento</response>
         [HttpDelete] [Route("api/evento/{id}")]
         public ObjectResult Delete(int id) {
             var evento = _eventoRepository.Buscar(id);
