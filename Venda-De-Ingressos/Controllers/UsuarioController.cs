@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -7,6 +8,7 @@ using Venda_De_Ingressos.Repositories.Interface;
 using Venda_De_Ingressos.Ultilidade;
 
 namespace Venda_De_Ingressos.Controllers {
+    [Authorize]
     public class UsuarioController : Controller {
         private readonly IUsuarioRepository _usuarioRepository;
 

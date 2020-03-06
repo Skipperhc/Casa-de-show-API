@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
+using Microsoft.AspNetCore.Authorization;
 using Venda_De_Ingressos.Models;
 using Venda_De_Ingressos.Models.ViewModels.CasaDeShowViewModels;
 using Venda_De_Ingressos.Repositories;
@@ -9,6 +10,7 @@ using Venda_De_Ingressos.Repositories.Interface;
 using Venda_De_Ingressos.Ultilidade;
 
 namespace Venda_De_Ingressos.Controllers {
+    [Authorize]
     [Produces("application/json")] public class CasaDeShowController : Controller {
         private readonly ICasaDeShowRepository _casaDeShowRepository;
 
@@ -21,6 +23,7 @@ namespace Venda_De_Ingressos.Controllers {
         /// </summary>
         /// <returns>Uma lista contendo todas as casas de shows cadastradas</returns>
         /// <response code="200">Se a listagem for realizada com sucesso.</response>
+        /// <response code="401">Se o usuário não estiver autenticado.</response>
         /// <response code="404">Se nenhuma casa de show for encontrada.</response>
         [HttpGet] [Route("api/casas")] public ObjectResult Get() {
             var casasDeShows = _casaDeShowRepository.Listar();
@@ -41,6 +44,7 @@ namespace Venda_De_Ingressos.Controllers {
         ///<returns>Uma casa de show que tenha o id solicitado</returns>
         /// <response code="200">Se a casa de show for retornada com sucesso.</response>
         /// <response code="404">Se nenhuma casa de show for encontrada.</response>
+        /// <response code="401">Se o usuário não estiver autenticado.</response>
         [HttpGet] [Route("api/casas/{id}")] public ObjectResult Get(int id) {
             var casaDeShow = _casaDeShowRepository.Buscar(id);
 
@@ -60,6 +64,7 @@ namespace Venda_De_Ingressos.Controllers {
         ///<returns>Uma casa de show que tenha o nome solicitado</returns>
         /// <response code="200">Se a casa de show foi encontrada com sucesso.</response>
         /// <response code="404">Se nenhuma casa de show for encontrada.</response>
+        /// <response code="401">Se o usuário não estiver autenticado.</response>
         [HttpGet] [Route("api/casas/nome/{nome}")]
         public ObjectResult GetNome(string nome) {
             nome.Replace('%', ' ');
@@ -80,6 +85,7 @@ namespace Venda_De_Ingressos.Controllers {
         /// </summary>
         /// <response code="200">Se a listagem for um sucesso.</response>
         /// <response code="404">Se nenhuma casa for encontrada.</response>
+        /// <response code="401">Se o usuário não estiver autenticado.</response>
         [HttpGet] [Route("api/casas/asc")] public ObjectResult GetAsc() {
             var casaDeShow = _casaDeShowRepository.ListarAsc();
 
@@ -97,6 +103,7 @@ namespace Venda_De_Ingressos.Controllers {
         /// </summary>
         /// <response code="200">Se a listagem for um sucesso.</response>
         /// <response code="404">Se nenhuma casa for encontrada.</response>
+        /// <response code="401">Se o usuário não estiver autenticado.</response>
         [HttpGet] [Route("api/casas/desc")] public ObjectResult GetDesc() {
             var casaDeShow = _casaDeShowRepository.ListarDesc();
 
@@ -126,6 +133,7 @@ namespace Venda_De_Ingressos.Controllers {
         /// </remarks>
         /// <response code="201">Se o cadastro for um sucesso.</response>
         /// <response code="400">Se der erro ao cadastrar: parâmetros errados ou incompatíveis, falta de informação.</response>
+        /// <response code="401">Se o usuário não estiver autenticado.</response>
         [HttpPost]
         [Route("api/casas")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -167,6 +175,7 @@ namespace Venda_De_Ingressos.Controllers {
         /// <response code="200">Se a edição for um sucesso.</response>
         /// <response code="400">Se der erro ao cadastrar a casa de show: id da requisição for diferente do id da casa de show,
         /// id da casa for inexistente, algum campo estar invalidado.</response>
+        /// <response code="401">Se o usuário não estiver autenticado.</response>
         /// <response code="406">Se os campos não forem preenchidos corretamente.</response>
         [HttpPut] [Route("api/casas/{id}")]
         public ObjectResult Put(int id, [FromBody] CasaDeShowEdicaoViewModel casaDeShowTemporaria) {
@@ -209,6 +218,7 @@ namespace Venda_De_Ingressos.Controllers {
         /// <param name="id">Id da casa de show</param>  
         /// <response code="200">Se a exclusão for um sucesso.</response>
         /// <response code="404">Se a casa de show não for encontrada</response>
+        /// <response code="401">Se o usuário não estiver autenticado.</response>
         /// <response code="406">Se não for possível deletar esta casa de show</response>
         [HttpDelete] [Route("api/casas/{id}")] public ObjectResult Delete(int id) {
             var casaDeShow = _casaDeShowRepository.Buscar(id);

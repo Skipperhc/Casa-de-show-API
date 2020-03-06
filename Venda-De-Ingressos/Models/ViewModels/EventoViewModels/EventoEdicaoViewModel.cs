@@ -24,7 +24,6 @@ namespace Venda_De_Ingressos.Models.ViewModels.EventoViewModels {
         public DateTime Data { get; set; }
         
         [Required(ErrorMessage = "O campo {0} é requerido")]
-        [Range(3,10000, ErrorMessage = "O campo {0} aceita numeros de {1} até {2}")]
         [Display(Name="Id da casa de show")]
         public int CasaDeShowId { get; set; }
     }
